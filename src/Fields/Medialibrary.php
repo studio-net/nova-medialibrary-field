@@ -60,6 +60,8 @@ class Medialibrary extends Field
 
     public $attachRules;
 
+    public $preventUpload;
+
     public function __construct(string $name, string $collectionName = '', string $diskName = '', string $attribute = null)
     {
         parent::__construct($name, $attribute);
@@ -71,6 +73,7 @@ class Medialibrary extends Field
         $this->resolveMediaUsing(new ResolveMediaCallback);
         $this->single(false);
         $this->mediaOnIndex(1);
+        $this->preventUpload(false);
         $this->attachRules([]);
         $this->resolve(null);
     }
@@ -303,6 +306,13 @@ class Medialibrary extends Field
         return $this->withMeta(['autouploading' => true]);
     }
 
+    public function preventUpload($callable = true): self
+    {
+        $this->preventUpload = callable_or_default($callable, fn () => true)();
+
+        return $this;
+    }
+
     /**
      * @param \Illuminate\Contracts\Validation\Rule|string|array $rules
      */
@@ -420,6 +430,7 @@ class Medialibrary extends Field
         return array_merge([
             'collectionName' => $this->collectionName,
             'single' => $this->single,
+            'preventUpload' => $this->preventUpload,
         ], $this->meta);
     }
 }

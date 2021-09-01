@@ -17,11 +17,11 @@
       </p>
     </div>
 
-    <label :for="'input' + _uid" class="form-file form-file-btn btn btn-default btn-primary" dusk="media-choose-action-button">
+    <label :for="'input' + _uid" v-if="!context.field.preventUpload" class="form-file form-file-btn btn btn-default btn-primary" dusk="media-choose-action-button">
       {{ chooseButtonText }}
     </label>
 
-    <button v-if="attachExistingButtonVisible" type="button" class="btn btn-default btn-primary ml-3" @click="attachExisting" dusk="media-attach-existing-button">
+    <button v-if="attachExistingButtonVisible" type="button" :class="{'ml-3': !context.field.preventUpload}" class="btn btn-default btn-primary" @click="attachExisting" dusk="media-attach-existing-button">
       {{ __('Use existing') }}
     </button>
 
